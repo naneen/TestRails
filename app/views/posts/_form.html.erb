@@ -24,9 +24,10 @@
     <%= f.text_area :body %>
   </div>
     <div class="field">
-
-            <input type="checkbox" name="customer[preferences][]" value="yellow"/>
-
+        <% @tags.each do |tag| %>
+            <%= check_box_tag 'tag_ids[]', tag.id -%>
+            <%= tag.name %>
+        <% end %>
     </div>
   <div class="actions">
     <%= f.submit %>
