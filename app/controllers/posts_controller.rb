@@ -29,11 +29,8 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.user_id == current_user.id
-      params[:tag_ids].each do |t|
-        newtag = Tag.find(t)
-        @post.tags << newtag
-        logger.debug @post.tags.to_s
-      end
+      @post.tags = Tag.find(params[:tag_ids]);
+
       respond_to do |format|
         if @post.save
           format.html { redirect_to @post, notice: 'Post was successfully created.' }
@@ -51,11 +48,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
-    # if ( !params[:tag_ids].blank? )
-    #   logger.debug params[:tag_ids].to_s
-    # else
-    #   logger.debug 'tag array not found'
-    # end
+    @post.tags = Tag.find( params[:tag_ids]);
 
     respond_to do |format|
       if @post.update(post_params)
@@ -71,6 +64,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    @post.tags.destroy
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
